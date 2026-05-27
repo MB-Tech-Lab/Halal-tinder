@@ -1,0 +1,42 @@
+{
+  "name": "@halal-tinder/mobile",
+  "version": "0.1.0",
+  "description": "React Native Expo mobile app for Halal Tinder",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "expo start",
+    "build": "expo build",
+    "build:web": "expo export --platform web",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rm -rf .expo .turbo node_modules"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-native": "^0.73.0",
+    "expo": "^50.0.0",
+    "expo-router": "^3.4.0",
+    "@react-navigation/native": "^6.1.0",
+    "@react-navigation/stack": "^6.3.0",
+    "@react-navigation/bottom-tabs": "^6.5.0",
+    "zustand": "^4.4.0",
+    "@tanstack/react-query": "^5.32.0",
+    "axios": "^1.6.0",
+    "zod": "^3.22.4",
+    "react-hook-form": "^7.47.0",
+    "socket.io-client": "^4.7.0",
+    "@halal-tinder/shared": "*",
+    "@halal-tinder/validation": "*",
+    "@halal-tinder/config": "*",
+    "@halal-tinder/ui": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "@types/react": "^18.2.0",
+    "@types/react-native": "^0.73.0",
+    "eslint": "^8.52.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0"
+  }
+}

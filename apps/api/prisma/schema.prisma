@@ -1,0 +1,181 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MatchStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
+}
+
+enum NotificationType {
+  MATCH
+  MESSAGE
+  SYSTEM
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  phone     String?
+  password  String
+  name      String
+  role      UserRole   @default(USER)
+  verified  Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  profile         UserProfile?
+  sentMatches     Match[]      @relation("user1")
+  receivedMatches Match[]      @relation("user2")
+  conversations   Conversation[] @relation("user1")
+  conversations2  Conversation[] @relation("user2")
+  sentMessages    Message[]    @relation("sender")
+  notifications   Notification[]
+  reports         Report[]     @relation("reporter")
+  reportedBy      Report[]     @relation("reported")
+
+  @@index([email])
+}
+
+model UserProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  age         Int?
+  gender      Gender?
+  bio         String?
+  location    String?
+  verified    Boolean  @default(false)
+  photos      String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferences Preferences?
+
+  @@index([userId])
+}
+
+model Preferences {
+  id                String   @id @default(cuid())
+  userProfileId     String   @unique
+  ageMin            Int?
+  ageMax            Int?
+  genders           Gender[] @default([])
+  locations         String[] @default([])
+  seekingMarriage   Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userProfile UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+
+  @@index([userProfileId])
+}
+
+model Match {
+  id        String      @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  status    MatchStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user1 User @relation("user1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2 User @relation("user2", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  user1Id     String
+  user2Id     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user1    User      @relation("user1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2    User      @relation("user2", fields: [user2Id], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String
+  read           Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([senderId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  type      NotificationType
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  reporterId String
+  reportedId String
+  reason     String
+  description String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  reporter User @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reported User @relation("reported", fields: [reportedId], references: [id], onDelete: Cascade)
+
+  @@unique([reporterId, reportedId])
+  @@index([reporterId])
+  @@index([reportedId])
+}
+
+model Settings {
+  id    String  @id @default(cuid())
+  key   String  @unique
+  value String
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+}

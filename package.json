@@ -1,0 +1,25 @@
+{
+  "name": "halal-tinder",
+  "version": "0.1.0",
+  "description": "Production-grade monorepo for halal matrimony mobile application",
+  "private": true,
+  "packageManager": "pnpm@10",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean && turbo prune --scope=@halal-tinder/* --docker",
+    "db:migrate": "cd apps/api && pnpm prisma migrate dev",
+    "db:generate": "cd apps/api && pnpm prisma generate",
+    "db:seed": "cd apps/api && pnpm prisma db seed"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.2",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=10.0.0"
+  }
+}

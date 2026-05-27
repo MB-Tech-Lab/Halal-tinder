@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Halal Tinder",
+    "slug": "halal-tinder",
+    "version": "0.1.0",
+    "assetBundlePatterns": ["**/*"],
+    "scheme": "halaltinder",
+    "platforms": ["ios", "android", "web"],
+    "ios": {
+      "supportsTabletMode": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
