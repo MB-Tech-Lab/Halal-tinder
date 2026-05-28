@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
+    "helmet": "^8.2.0",
+    "inversify": "^6.2.2",
+    "inversify-express-utils": "^6.5.0",
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "^7.8.0",
+    "reflect-metadata": "^0.2.2",
+    "zod": "^4.4.3"
+  }
+}
